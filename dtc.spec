@@ -71,7 +71,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc README.license
 %{_includedir}/fdt.h
 %{_includedir}/libfdt.h
 
