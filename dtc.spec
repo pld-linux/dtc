@@ -10,6 +10,8 @@ Group:		Libraries
 Source0:	http://www.jdl.com/software/%{name}-v%{version}.tgz
 # Source0-md5:	46bcff355b60d85bd311fc95b9ff0630
 URL:		http://git.jdl.com/gitweb/
+BuildRequires:	bison
+BuildRequires:	flex
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %{?debug:%define with_verbose 1}
