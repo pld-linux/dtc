@@ -12,6 +12,7 @@ Source0:	http://www.jdl.com/software/%{name}-v%{version}.tgz
 URL:		http://git.jdl.com/gitweb/
 BuildRequires:	bison
 BuildRequires:	flex
+Requires:	%{name}-doc = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %{?debug:%define with_verbose 1}
@@ -26,6 +27,7 @@ input format is "dts", a human readable source format, and creates a
 Summary:	Header files for fdt library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki fdt
 Group:		Development/Libraries
+Requires:	%{name}-doc = %{version}-%{release}
 # does not require base. see README.license
 
 %description devel
@@ -45,6 +47,17 @@ Static fdt library.
 
 %description static -l pl.UTF-8
 Statyczna biblioteka fdt.
+
+%package doc
+Summary:        Dtc documentation
+Summary(pl.UTF-8):      Dokumentacja dla dtc
+Group:          Development/Libraries
+
+%description doc
+Dtc package documentation.
+
+%description doc -l pl.UTF-8
+Dokumentacja pakietu dtc.
 
 %prep
 %setup -q -n %{name}-v%{version}
@@ -68,15 +81,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc TODO README.license Documentation/manual.txt
 %attr(755,root,root) %{_bindir}/dtc
 
 %files devel
 %defattr(644,root,root,755)
-%doc README.license
 %{_includedir}/fdt.h
 %{_includedir}/libfdt.h
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libfdt.a
+
+%files doc
+%doc TODO README.license Documentation/manual.txt
