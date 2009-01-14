@@ -2,13 +2,14 @@
 %bcond_without	verbose		# verbose build (V=1)
 
 Summary:	The Device Tree Compiler
+Summary(pl.UTF-8): Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.1.0
+Version:	1.2.0
 Release:	0.1
 License:	GPL v2 (dtc), GPL/BSD (fdt library)
 Group:		Libraries
 Source0:	http://www.jdl.com/software/%{name}-v%{version}.tgz
-# Source0-md5:	46bcff355b60d85bd311fc95b9ff0630
+# Source0-md5:	0f1841de79abbff57691adc31d5f3525
 URL:		http://git.jdl.com/gitweb/
 BuildRequires:	bison
 BuildRequires:	flex
@@ -22,6 +23,13 @@ The Device Tree Compiler, dtc, takes as input a device-tree in a given
 format and outputs a device-tree in another format. Typically, the
 input format is "dts", a human readable source format, and creates a
 "dtb", or binary format as output.
+
+%description -l pl.UTF-8
+Kompilator drzewiastej struktury urządzeń, dtc, przyjmuje na wejściu
+dane w jednym formacie by na wyjściu wyprodukować strukturę danych w
+innym. Najczęściej format wejściowy to "dts", intuicyjny i łatwy w
+odczycie (tzw. human readable), natomiast wyjściowy to "dtb" lub
+inaczej format binarny.
 
 %package devel
 Summary:	Header files for fdt library
