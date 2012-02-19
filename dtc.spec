@@ -1,6 +1,7 @@
+#
 # Conditional build:
 %bcond_without	verbose		# verbose build (V=1)
-
+#
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8): Kompilator drzewiastej struktury urządzeń
 Name:		dtc
@@ -104,8 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n libfdt -p /sbin/ldconfig
-%postun -n libfdt -p /sbin/ldconfig 
+%post	-n libfdt -p /sbin/ldconfig
+%postun	-n libfdt -p /sbin/ldconfig 
 
 %files
 %defattr(644,root,root,755)
@@ -130,4 +131,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libfdt.a
 
 %files doc
+%defattr(644,root,root,755)
 %doc TODO README.license Documentation/manual.txt
