@@ -5,15 +5,17 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.3.0
-Release:	2
+Version:	1.4.1
+Release:	1
 License:	GPL v2 (dtc), GPL/BSD (fdt library)
 Group:		Libraries
-Source0:	http://www.jdl.com/software/%{name}-v%{version}.tgz
-# Source0-md5:	0b94ed452ed3d3b5c1546c27788c416f
-URL:		http://git.jdl.com/gitweb/
+Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
+# Source0-md5:	2c977ced2e900a397b2db846ae68ef89
+URL:		http://www.devicetree.org/Device_Tree_Compiler
 BuildRequires:	bison
 BuildRequires:	flex
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires:	libfdt = %{version}-%{release}
 Obsoletes:	dtc-doc < 1.3.0-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -75,7 +77,7 @@ Static fdt library.
 Statyczna biblioteka fdt.
 
 %prep
-%setup -q -n %{name}-v%{version}
+%setup -q
 
 %build
 %{__make} \
@@ -99,11 +101,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.license
+%doc README README.license
 %attr(755,root,root) %{_bindir}/convert-dtsv0
 %attr(755,root,root) %{_bindir}/dtc
 %attr(755,root,root) %{_bindir}/dtdiff
-%attr(755,root,root) %{_bindir}/ftdump
+%attr(755,root,root) %{_bindir}/fdtdump
+%attr(755,root,root) %{_bindir}/fdtget
+%attr(755,root,root) %{_bindir}/fdtput
 
 %files -n libfdt
 %defattr(644,root,root,755)
@@ -116,6 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libfdt.so
 %{_includedir}/fdt.h
 %{_includedir}/libfdt.h
+%{_includedir}/libfdt_env.h
 
 %files -n libfdt-static
 %defattr(644,root,root,755)
