@@ -5,12 +5,12 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.4.1
-Release:	2
-License:	GPL v2 (dtc), GPL/BSD (fdt library)
+Version:	1.4.2
+Release:	1
+License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	2c977ced2e900a397b2db846ae68ef89
+# Source0-md5:	3d5814e31b2046ef51fca8fece998db0
 URL:		http://www.devicetree.org/Device_Tree_Compiler
 BuildRequires:	bison
 BuildRequires:	flex
@@ -38,6 +38,7 @@ inaczej format binarny.
 %package -n libfdt
 Summary:	Device tree library
 Summary(pl.UTF-8):	Biblioteka drzewiastej struktury urządzeń
+License:	GPL v2+ or BSD
 Group:		Libraries
 Obsoletes:	dtc-doc < 1.3.0-2
 # does not require base. see README.license
@@ -51,11 +52,11 @@ Biblioteka drzewiastej struktury urządzeń.
 %package -n libfdt-devel
 Summary:	Header files for fdt library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki fdt
+License:	GPL v2+ or BSD
 Group:		Development/Libraries
 Requires:	libfdt = %{version}-%{release}
 Obsoletes:	dtc-devel
 Obsoletes:	dtc-doc < 1.3.0-2
-# does not require base. see README.license
 
 %description -n libfdt-devel
 Header files for fdt library.
@@ -66,6 +67,7 @@ Pliki nagłówkowe biblioteki fdt.
 %package -n libfdt-static
 Summary:	Static fdt library
 Summary(pl.UTF-8):	Statyczna biblioteka fdt
+License:	GPL v2+ or BSD
 Group:		Development/Libraries
 Requires:	libfdt-devel = %{version}-%{release}
 Obsoletes:	dtc-static
