@@ -1,21 +1,27 @@
 #
 # Conditional build:
+%bcond_without	python		# Python module
 %bcond_without	verbose		# verbose build (V=1)
 
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.4.4
+Version:	1.4.7
 Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	290318bab4d9e61e7fb7426b4666ad4d
+# Source0-md5:	cdf3bfae59374fdcd2bbc5ae4f0e835e
+Patch0:		%{name}-python.patch
 URL:		http://www.devicetree.org/Device_Tree_Compiler
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
+%if %{with python}
+BuildRequires:	python-devel >= 2
+BuildRequires:	swig-python
+%endif
 Requires:	libfdt = %{version}-%{release}
 Obsoletes:	dtc-doc < 1.3.0-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -78,14 +84,28 @@ Static fdt library.
 %description -n libfdt-static -l pl.UTF-8
 Statyczna biblioteka fdt.
 
+%package -n python-libfdt
+Summary:	Python binding for fdt library
+Summary(pl.UTF-8):	Wiązanie Pythona do biblioteki fdt
+License:	GPL v2+ or BSD
+Group:		Libraries/Python
+
+%description -n python-libfdt
+Python binding for fdt library.
+
+%description -n python-libfdt -l pl.UTF-8
+Wiązanie Pythona do biblioteki fdt.
+
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__make} \
 	%{?with_verbose:V=1} \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags} -fPIC"
+	CFLAGS="%{rpmcflags} -fPIC" \
+	%{!?with_python:NO_PYTHON=1}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -93,7 +113,13 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	%{?with_verbose:V=1} \
 	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir}
+	LIBDIR=%{_libdir} \
+	%{!?with_python:NO_PYTHON=1} \
+	SETUP_PREFIX=%{_prefix}
+
+%if %{with python}
+%py_postclean
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -109,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/dtdiff
 %attr(755,root,root) %{_bindir}/fdtdump
 %attr(755,root,root) %{_bindir}/fdtget
+%attr(755,root,root) %{_bindir}/fdtoverlay
 %attr(755,root,root) %{_bindir}/fdtput
 
 %files -n libfdt
@@ -127,3 +154,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libfdt-static
 %defattr(644,root,root,755)
 %{_libdir}/libfdt.a
+
+%if %{with python}
+%files -n python-libfdt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{py_sitedir}/_libfdt.so
+%{py_sitedir}/pylibfdt
+%{py_sitedir}/libfdt-%{version}-py*.egg-info
+%endif
