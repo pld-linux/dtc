@@ -1,19 +1,11 @@
---- dtc-1.4.7/pylibfdt/Makefile.pylibfdt.orig	2018-07-23 05:00:50.000000000 +0200
-+++ dtc-1.4.7/pylibfdt/Makefile.pylibfdt	2018-08-24 20:25:46.505442238 +0200
-@@ -8,7 +8,7 @@
- define run_setup
- 	SOURCES="$(1)" CPPFLAGS="$(CPPFLAGS)" OBJDIR="$(PYLIBFDT_objdir)"
- 	VERSION="$(dtc_version)"
--	$(PYLIBFDT_objdir)/setup.py --quiet $(2)
-+	$(PYLIBFDT_objdir)/setup.py $(2)
- endef
+--- dtc-1.5.0/pylibfdt/Makefile.pylibfdt.orig	2019-03-10 21:31:13.430242485 +0100
++++ dtc-1.5.0/pylibfdt/Makefile.pylibfdt	2019-03-10 21:33:46.816078189 +0100
+@@ -21,7 +21,7 @@
  
- $(PYMODULE): $(PYLIBFDT_srcs)
-@@ -19,6 +19,6 @@
  install_pylibfdt: $(PYMODULE)
- 	$(VECHO) INSTALL-PYLIB; \
- 	$(call run_setup, $(PYLIBFDT_srcs), \
--		install $(if $(SETUP_PREFIX),--prefix=$(SETUP_PREFIX)))
-+		install --optimize=2 $(if $(SETUP_PREFIX),--prefix=$(SETUP_PREFIX)) $(if $(DESTDIR),--root=$(DESTDIR)))
+ 	@$(VECHO) INSTALL-PYLIB
+-	$(PYTHON) $(SETUP) $(SETUPFLAGS) install --prefix=$(PREFIX)
++	$(PYTHON) $(SETUP) $(SETUPFLAGS) install --optimize=2 --prefix=$(PREFIX) $(if $(DESTDIR),--root=$(DESTDIR))
  
- PYLIBFDT_cleanfiles = libfdt_wrap.c libfdt.py libfdt.pyc _libfdt.so
+ pylibfdt_clean:
+ 	@$(VECHO) CLEAN "(pylibfdt)"
