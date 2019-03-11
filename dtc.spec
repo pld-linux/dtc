@@ -101,7 +101,7 @@ Wiązanie Pythona do biblioteki fdt.
 %patch0 -p1
 
 %build
-%{__make} \
+%{__make} -j1 \
 	%{?with_verbose:V=1} \
 	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags} -fPIC" \
@@ -109,6 +109,7 @@ Wiązanie Pythona do biblioteki fdt.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	%{?with_verbose:V=1} \
