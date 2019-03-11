@@ -110,7 +110,7 @@ Wiązanie Pythona do biblioteki fdt.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	%{?with_verbose:V=1} \
 	PREFIX=%{_prefix} \
