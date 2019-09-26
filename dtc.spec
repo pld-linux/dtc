@@ -1,17 +1,23 @@
 #
 # Conditional build:
-%bcond_without	python		# Python module
+%bcond_without	python		# Python module (any)
+%bcond_without	python2		# CPython 2.x module
+%bcond_without	python3		# CPython 3.x module
 %bcond_without	verbose		# verbose build (V=1)
 
+%if %{without python}
+%undefine	with_python2
+%undefine	with_python3
+%endif
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.5.0
+Version:	1.5.1
 Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	1e7f54238d991b81c54fb5aabf71ff23
+# Source0-md5:	d5b67727ee6d168fd83023e995565341
 Patch0:		%{name}-python.patch
 URL:		http://www.devicetree.org/Device_Tree_Compiler
 BuildRequires:	bison
@@ -19,8 +25,13 @@ BuildRequires:	flex
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 %if %{with python}
+%if %{with python2}
 BuildRequires:	python-devel >= 2
-BuildRequires:	swig-python
+%endif
+%if %{with python3}
+BuildRequires:	python3-devel >= 1:3.2
+%endif
+BuildRequires:	swig-python >= 2.0.10
 %endif
 Requires:	libfdt = %{version}-%{release}
 Obsoletes:	dtc-doc < 1.3.0-2
@@ -85,16 +96,28 @@ Static fdt library.
 Statyczna biblioteka fdt.
 
 %package -n python-libfdt
-Summary:	Python binding for fdt library
-Summary(pl.UTF-8):	Wiązanie Pythona do biblioteki fdt
+Summary:	Python 2 binding for fdt library
+Summary(pl.UTF-8):	Wiązanie Pythona 2 do biblioteki fdt
 License:	GPL v2+ or BSD
 Group:		Libraries/Python
 
 %description -n python-libfdt
-Python binding for fdt library.
+Python 2 binding for fdt library.
 
 %description -n python-libfdt -l pl.UTF-8
-Wiązanie Pythona do biblioteki fdt.
+Wiązanie Pythona 2 do biblioteki fdt.
+
+%package -n python3-libfdt
+Summary:	Python 3 binding for fdt library
+Summary(pl.UTF-8):	Wiązanie Pythona 3 do biblioteki fdt
+License:	GPL v2+ or BSD
+Group:		Libraries/Python
+
+%description -n python3-libfdt
+Python 3 binding for fdt library.
+
+%description -n python3-libfdt -l pl.UTF-8
+Wiązanie Pythona 3 do biblioteki fdt.
 
 %prep
 %setup -q
@@ -105,7 +128,18 @@ Wiązanie Pythona do biblioteki fdt.
 	%{?with_verbose:V=1} \
 	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags} -fPIC" \
-	%{!?with_python:NO_PYTHON=1}
+	NO_PYTHON=1
+
+%if %{with python}
+cd pylibfdt
+
+%if %{with python2}
+%py_build
+%endif
+%if %{with python3}
+%py3_build
+%endif
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -115,11 +149,20 @@ rm -rf $RPM_BUILD_ROOT
 	%{?with_verbose:V=1} \
 	PREFIX=%{_prefix} \
 	LIBDIR=%{_libdir} \
-	%{!?with_python:NO_PYTHON=1} \
+	NO_PYTHON=1 \
 	SETUP_PREFIX=%{_prefix}
 
 %if %{with python}
+cd pylibfdt
+
+%if %{with python2}
+%py_install
+
 %py_postclean
+%endif
+%if %{with python3}
+%py3_install
+%endif
 %endif
 
 %clean
@@ -141,7 +184,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libfdt
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libfdt-%{version}.so
+%attr(755,root,root) %{_libdir}/libfdt-1.5.0.so
 %attr(755,root,root) %ghost %{_libdir}/libfdt.so.1
 
 %files -n libfdt-devel
@@ -156,10 +199,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libfdt.a
 
-%if %{with python}
+%if %{with python2}
 %files -n python-libfdt
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/_libfdt.so
 %{py_sitedir}/libfdt.py[co]
-%{py_sitedir}/libfdt-%{version}-py*.egg-info
+%{py_sitedir}/libfdt-1.5.0-py*.egg-info
+%endif
+
+%if %{with python3}
+%files -n python3-libfdt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{py3_sitedir}/_libfdt.cpython-*.so
+%{py3_sitedir}/libfdt.py
+%{py3_sitedir}/__pycache__/libfdt.cpython-*.py[co]
+%{py3_sitedir}/libfdt-1.5.0-py*.egg-info
 %endif
