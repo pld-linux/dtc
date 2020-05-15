@@ -12,14 +12,14 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.5.1
-Release:	2
+Version:	1.6.0
+Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	d5b67727ee6d168fd83023e995565341
+# Source0-md5:	1556ba93648bf70d7aa034252e278751
 Patch0:		%{name}-python.patch
-URL:		http://www.devicetree.org/Device_Tree_Compiler
+URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	tar >= 1:1.22
@@ -36,6 +36,8 @@ BuildRequires:	swig-python >= 2.0.10
 Requires:	libfdt = %{version}-%{release}
 Obsoletes:	dtc-doc < 1.3.0-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		abi_ver	%{version}
 
 %{?debug:%define with_verbose 1}
 
@@ -184,7 +186,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libfdt
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libfdt-1.5.0.so
+%attr(755,root,root) %{_libdir}/libfdt-%{abi_ver}.so
 %attr(755,root,root) %ghost %{_libdir}/libfdt.so.1
 
 %files -n libfdt-devel
@@ -204,7 +206,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/_libfdt.so
 %{py_sitedir}/libfdt.py[co]
-%{py_sitedir}/libfdt-1.5.0-py*.egg-info
+%{py_sitedir}/libfdt-%{abi_ver}-py*.egg-info
 %endif
 
 %if %{with python3}
@@ -213,5 +215,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{py3_sitedir}/_libfdt.cpython-*.so
 %{py3_sitedir}/libfdt.py
 %{py3_sitedir}/__pycache__/libfdt.cpython-*.py[co]
-%{py3_sitedir}/libfdt-1.5.0-py*.egg-info
+%{py3_sitedir}/libfdt-%{abi_ver}-py*.egg-info
 %endif
