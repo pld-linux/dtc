@@ -12,12 +12,12 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.6.0
-Release:	2
+Version:	1.6.1
+Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	1556ba93648bf70d7aa034252e278751
+# Source0-md5:	709888bac3aad657e6020d0e491fc0ba
 Patch0:		%{name}-python.patch
 URL:		https://www.devicetree.org/
 BuildRequires:	bison
@@ -134,6 +134,8 @@ Wiązanie Pythona 3 do biblioteki fdt.
 
 %if %{with python}
 cd pylibfdt
+ln -sf ../version_gen.h .
+ln -sf ../libfdt .
 
 %if %{with python2}
 %py_build
@@ -206,7 +208,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/_libfdt.so
 %{py_sitedir}/libfdt.py[co]
-%{py_sitedir}/libfdt-%{abi_ver}-py*.egg-info
+%{py_sitedir}/libfdt-%{abi_ver}*.egg-info
 %endif
 
 %if %{with python3}
@@ -215,5 +217,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{py3_sitedir}/_libfdt.cpython-*.so
 %{py3_sitedir}/libfdt.py
 %{py3_sitedir}/__pycache__/libfdt.cpython-*.py[co]
-%{py3_sitedir}/libfdt-%{abi_ver}-py*.egg-info
+%{py3_sitedir}/libfdt-%{abi_ver}*.egg-info
 %endif
