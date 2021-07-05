@@ -22,8 +22,10 @@ Patch0:		%{name}-python.patch
 URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
+BuildRequires:	pkgconfig
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
+BuildRequires:	yaml-devel
 %if %{with python}
 %if %{with python2}
 BuildRequires:	python-devel >= 2
