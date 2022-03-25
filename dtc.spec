@@ -13,7 +13,7 @@ Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
 Version:	1.6.1
-Release:	1
+Release:	2
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
