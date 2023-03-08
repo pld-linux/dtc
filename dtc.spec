@@ -24,6 +24,7 @@ URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	yaml-devel
