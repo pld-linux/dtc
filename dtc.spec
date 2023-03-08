@@ -12,13 +12,14 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.6.1
-Release:	3
+Version:	1.7.0
+Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	709888bac3aad657e6020d0e491fc0ba
+# Source0-md5:	228576aceed3aa89f54283aa0f1eb820
 Patch0:		%{name}-python.patch
+Patch1:		python2.patch
 URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
@@ -29,9 +30,13 @@ BuildRequires:	yaml-devel
 %if %{with python}
 %if %{with python2}
 BuildRequires:	python-devel >= 2
+BuildRequires:	python-setuptools
+BuildRequires:	python-setuptools_scm
 %endif
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.2
+BuildRequires:	python3-setuptools
+BuildRequires:	python3-setuptools_scm
 %endif
 BuildRequires:	swig-python >= 2.0.10
 %endif
@@ -126,6 +131,7 @@ Wiązanie Pythona 3 do biblioteki fdt.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__make} -j1 \
@@ -135,10 +141,7 @@ Wiązanie Pythona 3 do biblioteki fdt.
 	NO_PYTHON=1
 
 %if %{with python}
-cd pylibfdt
-ln -sf ../version_gen.h .
-ln -sf ../libfdt .
-
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %if %{with python2}
 %py_build
 %endif
@@ -159,8 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 	SETUP_PREFIX=%{_prefix}
 
 %if %{with python}
-cd pylibfdt
-
+export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
 %if %{with python2}
 %py_install
 
@@ -179,7 +181,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README README.license
+%doc README.license README.md
 %attr(755,root,root) %{_bindir}/convert-dtsv0
 %attr(755,root,root) %{_bindir}/dtc
 %attr(755,root,root) %{_bindir}/dtdiff
