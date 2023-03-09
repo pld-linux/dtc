@@ -82,7 +82,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki fdt
 License:	GPL v2+ or BSD
 Group:		Development/Libraries
 Requires:	libfdt = %{version}-%{release}
-Obsoletes:	dtc-devel
+Obsoletes:	dtc-devel < 1.3.0
 Obsoletes:	dtc-doc < 1.3.0-2
 
 %description -n libfdt-devel
@@ -97,7 +97,7 @@ Summary(pl.UTF-8):	Statyczna biblioteka fdt
 License:	GPL v2+ or BSD
 Group:		Development/Libraries
 Requires:	libfdt-devel = %{version}-%{release}
-Obsoletes:	dtc-static
+Obsoletes:	dtc-static < 1.3.0
 
 %description -n libfdt-static
 Static fdt library.
