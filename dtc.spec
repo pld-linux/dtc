@@ -10,12 +10,12 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.7.1
+Version:	1.7.2
 Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	8dc1c58c84ca19f825f6939801b44c52
+# Source0-md5:	0f193be84172556027da22d4fe3464e0
 Patch0:		%{name}-python.patch
 URL:		https://www.devicetree.org/
 BuildRequires:	bison
