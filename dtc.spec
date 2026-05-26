@@ -20,6 +20,7 @@ URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	meson >= 0.57.0
+BuildRequires:	ninja
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	tar >= 1:1.22
