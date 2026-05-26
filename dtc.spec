@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	python		# Python module (any)
 %bcond_without	python3		# CPython 3.x module
+%bcond_without	static_libs	# static library
 
 %if %{without python}
 %undefine	with_python3
@@ -108,6 +109,7 @@ Wiązanie Pythona 3 do biblioteki fdt.
 
 %build
 %meson \
+	%{!?with_static_libs:--default-library=shared} \
 	-Dpython=%{__enabled_disabled python}
 %meson_build
 
@@ -152,9 +154,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libfdt_env.h
 %{_pkgconfigdir}/libfdt.pc
 
+%if %{with static_libs}
 %files -n libfdt-static
 %defattr(644,root,root,755)
 %{_libdir}/libfdt.a
+%endif
 
 %if %{with python3}
 %files -n python3-libfdt
