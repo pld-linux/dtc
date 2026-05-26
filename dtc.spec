@@ -2,7 +2,6 @@
 # Conditional build:
 %bcond_without	python		# Python module (any)
 %bcond_without	python3		# CPython 3.x module
-%bcond_without	verbose		# verbose build (V=1)
 
 %if %{without python}
 %undefine	with_python3
@@ -10,32 +9,31 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.7.2
-Release:	3
+Version:	1.8.0
+Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	0f193be84172556027da22d4fe3464e0
-Patch0:		%{name}-python.patch
+# Source0-md5:	1dc9460d769d9ada4ac738d95da20bd4
 URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
+BuildRequires:	meson >= 0.57.0
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
-BuildRequires:	yaml-devel
+BuildRequires:	yaml-devel >= 0.2.3
 %if %{with python3}
+BuildRequires:	python3 >= 1:3.8
 BuildRequires:	python3-devel >= 1:3.8
-BuildRequires:	python3-setuptools
-BuildRequires:	python3-setuptools_scm
+BuildRequires:	python3-modules >= 1:3.8
 BuildRequires:	swig-python >= 2.0.10
 %endif
 Requires:	libfdt = %{version}-%{release}
+Requires:	yaml >= 0.2.3
 Obsoletes:	dtc-doc < 1.3.0-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%{?debug:%define with_verbose 1}
 
 %description
 The Device Tree Compiler, dtc, takes as input a device-tree in a given
@@ -107,36 +105,20 @@ Wiązanie Pythona 3 do biblioteki fdt.
 
 %prep
 %setup -q
-%patch -P 0 -p1
 
 %build
-%{__make} -j1 \
-	%{?with_verbose:V=1} \
-	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags} -fPIC" \
-	NO_PYTHON=1
-
-%if %{with python3}
-export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
-
-%py3_build
-%endif
+%meson \
+	-Dpython=%{__enabled_disabled python}
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} -j1 install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	%{?with_verbose:V=1} \
-	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir} \
-	NO_PYTHON=1 \
-	SETUP_PREFIX=%{_prefix}
+%meson_install
 
 %if %{with python3}
-export SETUPTOOLS_SCM_PRETEND_VERSION=%{version}
-
-%py3_install
+%py3_comp $RPM_BUILD_ROOT%{py3_sitedir}
+%py3_ocomp $RPM_BUILD_ROOT%{py3_sitedir}
 %endif
 
 %clean
@@ -168,6 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/fdt.h
 %{_includedir}/libfdt.h
 %{_includedir}/libfdt_env.h
+%{_pkgconfigdir}/libfdt.pc
 
 %files -n libfdt-static
 %defattr(644,root,root,755)
@@ -179,5 +162,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{py3_sitedir}/_libfdt.cpython-*.so
 %{py3_sitedir}/libfdt.py
 %{py3_sitedir}/__pycache__/libfdt.cpython-*.py[co]
-%{py3_sitedir}/libfdt-%{version}-py*.egg-info
 %endif
