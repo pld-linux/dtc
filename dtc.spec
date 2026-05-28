@@ -10,12 +10,12 @@
 Summary:	The Device Tree Compiler
 Summary(pl.UTF-8):	Kompilator drzewiastej struktury urządzeń
 Name:		dtc
-Version:	1.8.0
+Version:	1.8.1
 Release:	1
 License:	GPL v2+ (dtc), GPL v2+ or BSD (fdt library)
 Group:		Libraries
 Source0:	https://www.kernel.org/pub/software/utils/dtc/%{name}-%{version}.tar.xz
-# Source0-md5:	1dc9460d769d9ada4ac738d95da20bd4
+# Source0-md5:	9753bdbf18763efef1f5ae8c0cecb5f6
 URL:		https://www.devicetree.org/
 BuildRequires:	bison
 BuildRequires:	flex
